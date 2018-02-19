@@ -39,7 +39,7 @@ public class HomeController {
             lottery = RandomUtil.getRandomNumberInRange(0, guests.size());
             winner = guests.get(lottery);
 
-            System.out.println("Winner: " + winner);
+            System.out.println("Vencedor(a): " + winner);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
