@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,45 +15,64 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class HomeController {
 
     @Value("classpath:meetup.xls")
     private Resource res;
 
+    private static final String GUESTS = "guests";
+    private static final String WINNERS = "winners";
+
     @GetMapping("/")
-    public ModelAndView home() {
+    public ModelAndView home(HttpSession session) {
 
-        List<String> guests = new ArrayList<>();
-        String winner = "";
-        int lottery = 0;
-
-        System.out.println("All files:");
-        try (Stream<String> stream = Files.lines(Paths.get(res.getURI()))) {
-
-            guests = stream.collect(Collectors.toList());
-
-            // guests.forEach(System.out::println);
-
-            System.out.println("Stream size: " + guests.size());
-
-            lottery = RandomUtil.getRandomNumberInRange(0, guests.size());
-            winner = guests.get(lottery);
-
-            System.out.println("Vencedor(a): " + winner);
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
+        List<String> guests = (ArrayList<String>)session.getAttribute(GUESTS);
+        Stack<String> winners = (Stack<String>)session.getAttribute(WINNERS);
+        String winner = winners.empty()? "": winners.peek();
         ModelAndView mv = new ModelAndView("home");
-        mv.addObject("guests", guests);
+        mv.addObject(GUESTS, guests);
         mv.addObject("size", guests.size());
+        mv.addObject(WINNERS, winners);
         mv.addObject("winner", winner);
-        mv.addObject("lottery", lottery);
 
         return mv;
 
+    }
+
+    @GetMapping("/init")
+    public ModelAndView startDraw(HttpSession session) {
+        loadFile(session);
+        session.setAttribute(WINNERS,new Stack<String>());
+
+        return home(session);
+    }
+
+    @GetMapping("/draw")
+    public ModelAndView drawNext(HttpSession session) {
+        List<String> guests = (ArrayList<String>)session.getAttribute(GUESTS);
+        Stack<String> winners = (Stack<String>)session.getAttribute(WINNERS);
+        int winner = RandomUtil.getRandomNumberInRange(0, guests.size());
+        winners.push(guests.remove(winner));
+
+        return home(session);
+    }
+
+    private void loadFile(HttpSession session) {
+
+        System.out.println("All files:");
+        try (Stream<String> stream = Files.lines(Paths.get(res.getURI()))) {
+            List<String> guests = new ArrayList<>();
+            guests = stream.collect(Collectors.toList());
+
+            System.out.println("Stream size: " + guests.size());
+
+            session.setAttribute(GUESTS,guests);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
 }
