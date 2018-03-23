@@ -3,6 +3,7 @@
 <head>
  <title>SouJava Meetup Lottery</title>
  <div th:replace="/fragments/header :: header-css"/>
+	<link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
 </head>
 <body>
 <div th:replace="/fragments/header :: header"/>
@@ -15,19 +16,40 @@
  </div>
     <img th:src="@{lotto.png}" width="200"/>
 	<h1 layout:fragment="header">
-	 Winner (<b th:text="${winner}">0</b>):
+	 Winner: (<b th:text="${winner}">0</b>)
 	</h1>
-	<h2 th:text="${winner}"></h2>
 	<h1 layout:fragment="header">Guest list (<b th:text="${size}">0</b>)</h1>
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container list">
 		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Guests</th>
+				</tr>
+			</thead>
 			<tbody>
-				<tr th:if="${guests.empty}">
-					<td colspan="3">No guests</td>
-				</tr>
-				<tr th:each="guest : ${guests}">
-					<td th:text="${guest}">name</td>
-				</tr>
+			<tr th:if="${guests.empty}">
+				<td colspan="3">No guests</td>
+			</tr>
+			<tr th:each="guest : ${guests}">
+				<td th:text="${guest}">name</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div layout:fragment="content" class="container list">
+		<table class="table table-bordered table-striped">
+			<thead>
+			<tr>
+				<th>Winners</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:if="${winners.empty}">
+				<td colspan="3">No winners</td>
+			</tr>
+			<tr th:each="winner : ${winners}">
+				<td th:text="${winner}">name</td>
+			</tr>
 			</tbody>
 		</table>
 	</div>

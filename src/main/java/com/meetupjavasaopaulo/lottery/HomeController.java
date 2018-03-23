@@ -31,6 +31,12 @@ public class HomeController {
 
         List<String> guests = (ArrayList<String>)session.getAttribute(GUESTS);
         Stack<String> winners = (Stack<String>)session.getAttribute(WINNERS);
+
+        if(guests == null){
+            guests = new ArrayList<>();
+            winners = new Stack<>();
+        }
+
         String winner = winners.empty()? "": winners.peek();
         ModelAndView mv = new ModelAndView("home");
         mv.addObject(GUESTS, guests);
