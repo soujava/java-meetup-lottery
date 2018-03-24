@@ -1,61 +1,65 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
- <title>SouJava Meetup Lottery</title>
- <div th:replace="/fragments/header :: header-css"/>
-	<link rel="stylesheet" th:href="@{/style.css}"/>
+    <title>SouJava Meetup Lottery</title>
+    <div th:replace="/fragments/header :: header-css"/>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
 </head>
 <body>
 <div th:replace="/fragments/header :: header"/>
 <div class="container">
- <div class="starter-template">
-  <div id="host"></div>
-  <div id="time"></div>
-  <table id="statusTable" class="table table-hover table-bordered table-striped"><tbody></tbody></table>
-  <table id="fsTable" class="table table-hover table-bordered table-striped"><tbody></tbody></table>
- </div>
+    <div class="starter-template">
+        <div id="host"></div>
+        <div id="time"></div>
+        <table id="statusTable" class="table table-hover table-bordered table-striped">
+            <tbody></tbody>
+        </table>
+        <table id="fsTable" class="table table-hover table-bordered table-striped">
+            <tbody></tbody>
+        </table>
+    </div>
     <img th:src="@{lotto.png}" width="200"/>
-	<h1 layout:fragment="header">
-	 Winner: (<b th:text="${winner}">0</b>)
-	</h1>
-	<h2 layout:fragment="header">Guest # (<b th:text="${size}">0</b>)</h2>
-	<div class="buttons">
-		<a class="btn btn-primary" href="/init">Init Draw</a>
-		<a class="btn btn-primary" href="/draw">Draw Next</a>
-	</div>
-	<div layout:fragment="content" class="container list">
-		<table class="table table-bordered table-striped">
-			<thead>
-				<tr>
-					<th>Guests</th>
-				</tr>
-			</thead>
-			<tbody>
-			<tr th:if="${guests.empty}">
-				<td colspan="3">No guests</td>
-			</tr>
-			<tr th:each="guest : ${guests}">
-				<td th:text="${guest}">name</td>
-			</tr>
-			</tbody>
-		</table>
+    <h1 layout:fragment="header">
+        Winner: (<b th:text="${winner}">0</b>)
+    </h1>
+    <h2 layout:fragment="header">Guest # (<b th:text="${size}">0</b>)</h2>
+    <div class="buttons">
+        <a class="btn btn-primary" href="/init">Init Draw</a>
+        <a class="btn btn-primary" href="/draw">Draw Next</a>
+    </div>
+    <div layout:fragment="content" class="container list">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Guests</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${guests.empty}">
+                <td colspan="3">No guests</td>
+            </tr>
+            <tr th:each="guest : ${guests}">
+                <td th:text="${guest}">name</td>
+            </tr>
+            </tbody>
+        </table>
 
-		<table class="table table-bordered table-striped">
-			<thead>
-			<tr>
-				<th>Winners</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:if="${winners.empty}">
-				<td colspan="3">No winners</td>
-			</tr>
-			<tr th:each="winner : ${winners}">
-				<td th:text="${winner}">name</td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Winners</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${winners.empty}">
+                <td colspan="3">No winners</td>
+            </tr>
+            <tr th:each="winner : ${winners}">
+                <td th:text="${winner}">name</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div th:replace="/fragments/footer :: footer"/>
 </body>

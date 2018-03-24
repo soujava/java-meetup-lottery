@@ -1,39 +1,31 @@
 package com.meetupjavasaopaulo.lottery;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.util.ArrayUtils;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class HomeController {
 
-    @Value("classpath:meetup.xls")
-    private Resource res;
-
-    @Autowired
-    private HttpSession session;
-
     private static final String GUESTS = "guests";
     private static final String WINNERS = "winners";
-
-
-
+    @Value("classpath:meetup.xls")
+    private Resource res;
+    @Autowired
+    private HttpSession session;
 
     @GetMapping("/")
     public ModelAndView home() {
@@ -41,7 +33,7 @@ public class HomeController {
         List<String> guests = getGuests();
         Stack<String> winners = getWinners();
 
-        String winner = winners.empty()? "Draw has not started": winners.peek();
+        String winner = winners.empty() ? "Draw has not started" : winners.peek();
         ModelAndView mv = new ModelAndView("home");
         mv.addObject(GUESTS, guests);
         mv.addObject("size", guests.size());
@@ -64,7 +56,7 @@ public class HomeController {
         List<String> guests = getGuests();
         Stack<String> winners = getWinners();
         int winner = RandomUtil.getRandomNumberInRange(0, guests.size());
-        System.out.println("Winner index:"+ winner);
+        System.out.println("Winner index:" + winner);
         winners.push(guests.remove(winner));
 
         return home();
@@ -78,7 +70,7 @@ public class HomeController {
 
             System.out.println("Stream size: " + guests.size());
 
-            if(guests.get(0).contains("Name\tUser ID")) //Remove file header
+            if (guests.get(0).contains("Name\tUser ID")) //Remove file header
                 guests.remove(0);
 
             setGuests(guests);
@@ -87,23 +79,23 @@ public class HomeController {
         }
     }
 
-    private List<String> getGuests(){
+    private List<String> getGuests() {
 
-        if(session.getAttribute(GUESTS) == null)
+        if (session.getAttribute(GUESTS) == null)
             setGuests(new ArrayList<>());
 
-        return  (ArrayList<String>)session.getAttribute(GUESTS);
+        return (ArrayList<String>) session.getAttribute(GUESTS);
     }
 
-    private void setGuests(List<String> guests){
-        session.setAttribute(GUESTS,guests);
+    private void setGuests(List<String> guests) {
+        session.setAttribute(GUESTS, guests);
     }
 
     private Stack<String> getWinners() {
-        if(session.getAttribute(WINNERS) == null)
+        if (session.getAttribute(WINNERS) == null)
             setWinners(new Stack<>());
 
-        return (Stack<String>)session.getAttribute(WINNERS);
+        return (Stack<String>) session.getAttribute(WINNERS);
     }
 
     private void setWinners(Stack<String> winners) {
