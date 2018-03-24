@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
  <title>SouJava Meetup Lottery</title>
  <div th:replace="/fragments/header :: header-css"/>
-	<link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+	<link rel="stylesheet" th:href="@{/style.css}"/>
 </head>
 <body>
 <div th:replace="/fragments/header :: header"/>
@@ -18,7 +18,11 @@
 	<h1 layout:fragment="header">
 	 Winner: (<b th:text="${winner}">0</b>)
 	</h1>
-	<h1 layout:fragment="header">Guest list (<b th:text="${size}">0</b>)</h1>
+	<h2 layout:fragment="header">Guest # (<b th:text="${size}">0</b>)</h2>
+	<div class="buttons">
+		<a class="btn btn-primary" href="/init">Init Draw</a>
+		<a class="btn btn-primary" href="/draw">Draw Next</a>
+	</div>
 	<div layout:fragment="content" class="container list">
 		<table class="table table-bordered table-striped">
 			<thead>
@@ -35,8 +39,7 @@
 			</tr>
 			</tbody>
 		</table>
-	</div>
-	<div layout:fragment="content" class="container list">
+
 		<table class="table table-bordered table-striped">
 			<thead>
 			<tr>
