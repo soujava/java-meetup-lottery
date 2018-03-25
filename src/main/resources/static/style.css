@@ -1,0 +1,15 @@
+.list {
+    display: flex;
+    justify-content: space-between;
+}
+.table {
+    width: 45%;
+}
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+a {
+    margin: 5px;
+}
